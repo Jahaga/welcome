@@ -11,6 +11,7 @@ class Jeopardy extends Component {
     this.state = {
       data: { category: {} },
       score: 0,
+      guess: "",
     };
   }
   //get a new random question from the API and add it to the data object in state
@@ -23,16 +24,21 @@ class Jeopardy extends Component {
     });
   }
 
+  inputValue = (event) => {
+    const guess = event.target.value;
+    this.setState({ guess });
+  };
+
   yourAnswer = (event) => {
-    if (
-      document.getElementById("Answer-input").value.toLowerCase() ===
-      this.state.data.answer.toLowerCase()
-    ) {
-      this.state.score += this.state.data.value;
-    } else {
-      this.state.score -= this.state.data.value;
-    }
-    document.getElementById("Answer-input").value = "";
+    this.setState((state) => {
+      let score = state.score;
+      if (state.guess === state.data.value) {
+        score += state.data.value;
+      } else {
+        score -= state.data.value;
+      }
+      return { score, guess: "" };
+    });
     this.getNewQuestion();
   };
 
@@ -54,9 +60,10 @@ class Jeopardy extends Component {
           score={this.state.score}
           question={this.state.data.question}
           value={this.state.data.value}
+          guess={this.state.guess}
+          yourAnswer={this.yourAnswer}
+          inputValue={this.inputValue}
         />
-        <input type="text" id="Answer-input" />
-        <button onClick={this.yourAnswer}>Submit</button>
       </div>
     );
   }

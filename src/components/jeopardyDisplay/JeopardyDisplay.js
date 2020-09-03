@@ -14,6 +14,13 @@ function JeopardyDisplay(props) {
         <strong>{props.value} Points</strong>
         <br />
         <br />
+        <input
+          type="text"
+          id="Answer-input"
+          value={props.guess}
+          onChange={props.inputValue}
+        />
+        <button onClick={props.yourAnswer}>Submit</button>
       </div>
     </div>
   );
